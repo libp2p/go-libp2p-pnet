@@ -1,7 +1,6 @@
 package pnet
 
 import (
-	"context"
 	"crypto/cipher"
 	"crypto/rand"
 	"errors"
@@ -77,7 +76,7 @@ func (c *pskConn) Write(in []byte) (int, error) {
 
 var _ iconn.Conn = (*pskConn)(nil)
 
-func newPSKConn(ctx context.Context, psk *[32]byte, insecure iconn.Conn) (iconn.Conn, error) {
+func newPSKConn(psk *[32]byte, insecure iconn.Conn) (iconn.Conn, error) {
 	if insecure == nil {
 		return nil, errors.New("insecure is nil")
 	}
