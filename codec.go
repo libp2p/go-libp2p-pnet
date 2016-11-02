@@ -1,6 +1,7 @@
 package pnet
 
 import (
+	"fmt"
 	"io"
 
 	mc "github.com/multiformats/go-multicodec"
@@ -20,16 +21,15 @@ func decodeV1PSKKey(in io.Reader) (*[32]byte, error) {
 	}
 	err = mc.ConsumeHeader(in, headerPSKv1)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("psk header error: %s", err.Error())
 	}
 
 	in, err = mc.WrapTransformPathToHeader(in)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("wrapping error: %s", err.Error())
 	}
-
 	out := [32]byte{}
 
-	err = bmux.AllBasesMux().Decoder(in).Decode(out)
+	err = bmux.AllBasesMux().Decoder(in).Decode(out[:])
 	return &out, err
 }

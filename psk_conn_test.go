@@ -16,11 +16,11 @@ func setupPSKConns(ctx context.Context, t *testing.T) (iconn.Conn, iconn.Conn) {
 
 	//conn1, conn2, _, _ := setupSingleConn(t, ctx)
 	var conn1, conn2 iconn.Conn
-	psk1, err := newPSKConn(ctx, &testPSK, conn1)
+	psk1, err := newPSKConn(&testPSK, conn1)
 	if err != nil {
 		t.Fatal(err)
 	}
-	psk2, err := newPSKConn(ctx, &testPSK, conn2)
+	psk2, err := newPSKConn(&testPSK, conn2)
 	if err != nil {
 		t.Fatal(err)
 	}
