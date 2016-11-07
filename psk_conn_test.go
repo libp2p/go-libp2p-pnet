@@ -6,16 +6,18 @@ import (
 	"math/rand"
 	"testing"
 
+	dconn "github.com/Kubuxu/go-libp2p-dummy-conn"
 	iconn "github.com/libp2p/go-libp2p-interface-conn"
 )
 
 var testPSK = [32]byte{} // null bytes are as good test key as any other key
 
 func setupPSKConns(ctx context.Context, t *testing.T) (iconn.Conn, iconn.Conn) {
-	return nil, nil
+	conn1, conn2, err := dconn.NewDummyConnPair()
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	//conn1, conn2, _, _ := setupSingleConn(t, ctx)
-	var conn1, conn2 iconn.Conn
 	psk1, err := newPSKConn(&testPSK, conn1)
 	if err != nil {
 		t.Fatal(err)
@@ -27,7 +29,7 @@ func setupPSKConns(ctx context.Context, t *testing.T) (iconn.Conn, iconn.Conn) {
 	return psk1, psk2
 }
 
-func XTestPSKSimpelMessges(t *testing.T) {
+func TestPSKSimpelMessges(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.TODO())
 	defer cancel()
 
@@ -52,7 +54,7 @@ func XTestPSKSimpelMessges(t *testing.T) {
 	}
 }
 
-func XTestPSKFragmentation(t *testing.T) {
+func TestPSKFragmentation(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.TODO())
 	defer cancel()
 
