@@ -1,0 +1,36 @@
+{
+  "author": "libp2p",
+  "bugs": {
+    "URL": "https://github.com/libp2p/go-libp2p-pnet/issues",
+    "url": "https://github.com/libp2p/go-libp2p-pnet/issues"
+  },
+  "gx": {
+    "dvcsimport": "github.com/libp2p/go-libp2p-pnet"
+  },
+  "gxDependencies": [
+    {
+      "author": "Kubuxu",
+      "hash": "QmNXih3eQzoCs1B7ExaV6C2A6MX3WvT3SFj9uoW9n5EAcn",
+      "name": "go-libp2p-dummy-conn",
+      "version": "0.1.0"
+    },
+    {
+      "author": "libp2p",
+      "hash": "QmdNTwe3Jms4TgT9kkGFCwLJK8DffoTY4oTZXKqC7tf3nr",
+      "name": "go-libp2p-interface-pnet",
+      "version": "0.1.0"
+    },
+    {
+      "author": "whyrusleeping",
+      "hash": "QmRQhVisS8dmPbjBUthVkenn81pBxrx1GxE281csJhm2vL",
+      "name": "go-msgio",
+      "version": "0.0.0"
+    }
+  ],
+  "gxVersion": "0.9.1",
+  "language": "go",
+  "license": "MIT",
+  "name": "go-libp2p-pnet",
+  "version": "0.1.0"
+}
+
