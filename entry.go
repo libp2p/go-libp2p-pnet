@@ -1,13 +1,15 @@
 package pnet
 
 import (
-	"io"
+	"bytes"
 
 	ipnet "github.com/libp2p/go-libp2p-interface-pnet"
 )
 
-func NewProtector(input io.Reader) (ipnet.Protector, error) {
-	psk, err := decodeV1PSKKey(input)
+func NewProtector(key []byte) (ipnet.Protector, error) {
+	reader := bytes.NewReader(key)
+
+	psk, err := decodeV1PSKKey(reader)
 	if err != nil {
 		return nil, err
 	}
