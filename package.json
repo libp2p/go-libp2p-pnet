@@ -16,9 +16,9 @@
     },
     {
       "author": "libp2p",
-      "hash": "QmUk7YJkvwPRBpJNzf1NF2wb4XPoBHFXqU4fKcJqo5s7hz",
+      "hash": "QmNUMqjWxtR141NqamnCXNLqp38URvQm3yrAHjfiCHo1hc",
       "name": "go-libp2p-interface-pnet",
-      "version": "0.2.0"
+      "version": "1.1.0"
     },
     {
       "author": "whyrusleeping",
@@ -43,6 +43,7 @@
   "language": "go",
   "license": "MIT",
   "name": "go-libp2p-pnet",
-  "version": "0.4.0"
+  "releaseCmd": "git commit -a -m \"gx publish $VERSION\"",
+  "version": "0.5.0"
 }
 
