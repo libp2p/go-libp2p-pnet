@@ -30,7 +30,7 @@ func (c *pskConn) Read(out []byte) (int, error) {
 			return 0, err
 		}
 		if n != 24 {
-			return 0, errors.New("could not read full nonce")
+			return 0, errors.New("privnet: could not read full nonce")
 		}
 		c.readS20 = salsa20.New(c.psk, nonce)
 	}
