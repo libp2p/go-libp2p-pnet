@@ -3,16 +3,22 @@ package pnet
 import (
 	"crypto/cipher"
 	"crypto/rand"
-	"errors"
 
 	salsa20 "github.com/davidlazar/go-crypto/salsa20"
 	mpool "github.com/jbenet/go-msgio/mpool"
 	iconn "github.com/libp2p/go-libp2p-interface-conn"
+	ipnet "github.com/libp2p/go-libp2p-interface-pnet"
 )
 
 // we are using buffer pool as user needs their slice back
 // so we can't do XOR cripter in place
-var bufPool = mpool.ByteSlicePool
+var (
+	bufPool = mpool.ByteSlicePool
+
+	errShortNonce  = ipnet.NewError("could not read full nonce")
+	errInsecureNil = ipnet.NewError("insecure is nil")
+	errPSKNil      = ipnet.NewError("pre-shread key is nil")
+)
 
 type pskConn struct {
 	iconn.Conn
@@ -30,7 +36,7 @@ func (c *pskConn) Read(out []byte) (int, error) {
 			return 0, err
 		}
 		if n != 24 {
-			return 0, errors.New("privnet: could not read full nonce")
+			return 0, errShortNonce
 		}
 		c.readS20 = salsa20.New(c.psk, nonce)
 	}
@@ -39,13 +45,13 @@ func (c *pskConn) Read(out []byte) (int, error) {
 	in := bufPool.Get(maxn).([]byte) // get buffer
 	defer bufPool.Put(maxn, in)      // put the buffer back
 
-	in = in[:maxn]
-	n, err := c.Conn.Read(in)
+	in = in[:maxn]            // truncate to required length
+	n, err := c.Conn.Read(in) // read to in
 	if err != nil {
 		return 0, err
 	}
 
-	c.readS20.XORKeyStream(out[:n], in[:n])
+	c.readS20.XORKeyStream(out[:n], in[:n]) // decrypt to out buffer
 
 	return n, nil
 }
@@ -68,20 +74,20 @@ func (c *pskConn) Write(in []byte) (int, error) {
 	out := bufPool.Get(n).([]byte) // get buffer
 	defer bufPool.Put(n, out)      // put the buffer back
 
-	out = out[:n]
-	c.writeS20.XORKeyStream(out, in)
+	out = out[:n]                    // truncate to required length
+	c.writeS20.XORKeyStream(out, in) // encrypt
 
-	return c.Conn.Write(out)
+	return c.Conn.Write(out) // send
 }
 
 var _ iconn.Conn = (*pskConn)(nil)
 
 func newPSKConn(psk *[32]byte, insecure iconn.Conn) (iconn.Conn, error) {
 	if insecure == nil {
-		return nil, errors.New("insecure is nil")
+		return nil, errInsecureNil
 	}
 	if psk == nil {
-		return nil, errors.New("pre-shread key is nil")
+		return nil, errPSKNil
 	}
 	return &pskConn{
 		Conn: insecure,

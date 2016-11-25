@@ -15,7 +15,11 @@ func NewProtector(input io.Reader) (ipnet.Protector, error) {
 		return nil, err
 	}
 	f := fingerprint(psk)
-	return &protector{psk, f}, nil
+
+	return &protector{
+		psk:         psk,
+		fingerprint: f,
+	}, nil
 }
 
 type protector struct {
