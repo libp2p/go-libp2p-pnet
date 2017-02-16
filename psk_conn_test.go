@@ -7,12 +7,12 @@ import (
 	"testing"
 
 	dconn "github.com/Kubuxu/go-libp2p-dummy-conn"
-	iconn "github.com/libp2p/go-libp2p-interface-conn"
+	tconn "github.com/libp2p/go-libp2p-transport"
 )
 
 var testPSK = [32]byte{} // null bytes are as good test key as any other key
 
-func setupPSKConns(ctx context.Context, t *testing.T) (iconn.Conn, iconn.Conn) {
+func setupPSKConns(ctx context.Context, t *testing.T) (tconn.Conn, tconn.Conn) {
 	conn1, conn2, err := dconn.NewDummyConnPair()
 	if err != nil {
 		t.Fatal(err)

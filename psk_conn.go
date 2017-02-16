@@ -6,8 +6,8 @@ import (
 
 	salsa20 "github.com/davidlazar/go-crypto/salsa20"
 	mpool "github.com/jbenet/go-msgio/mpool"
-	iconn "github.com/libp2p/go-libp2p-interface-conn"
 	ipnet "github.com/libp2p/go-libp2p-interface-pnet"
+	tconn "github.com/libp2p/go-libp2p-transport"
 )
 
 // we are using buffer pool as user needs their slice back
@@ -21,7 +21,7 @@ var (
 )
 
 type pskConn struct {
-	iconn.Conn
+	tconn.Conn
 	psk *[32]byte
 
 	writeS20 cipher.Stream
@@ -80,9 +80,9 @@ func (c *pskConn) Write(in []byte) (int, error) {
 	return c.Conn.Write(out) // send
 }
 
-var _ iconn.Conn = (*pskConn)(nil)
+var _ tconn.Conn = (*pskConn)(nil)
 
-func newPSKConn(psk *[32]byte, insecure iconn.Conn) (iconn.Conn, error) {
+func newPSKConn(psk *[32]byte, insecure tconn.Conn) (tconn.Conn, error) {
 	if insecure == nil {
 		return nil, errInsecureNil
 	}

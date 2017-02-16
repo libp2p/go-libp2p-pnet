@@ -3,8 +3,8 @@ package pnet
 import (
 	"io"
 
-	iconn "github.com/libp2p/go-libp2p-interface-conn"
 	ipnet "github.com/libp2p/go-libp2p-interface-pnet"
+	tconn "github.com/libp2p/go-libp2p-transport"
 )
 
 var _ ipnet.Protector = (*protector)(nil)
@@ -29,7 +29,7 @@ type protector struct {
 	fingerprint []byte
 }
 
-func (p protector) Protect(in iconn.Conn) (iconn.Conn, error) {
+func (p protector) Protect(in tconn.Conn) (tconn.Conn, error) {
 	return newPSKConn(p.psk, in)
 }
 func (p protector) Fingerprint() []byte {
