@@ -16,9 +16,9 @@
     },
     {
       "author": "libp2p",
-      "hash": "QmPz66HHE2cG3KERnAPp8gVSyAPt2N1H9mLiq9nvxh5Xmb",
+      "hash": "QmcT6bMjz32yoMdyvZsMvqFnbbsDxhTYw6FG1yMqKV8Rbh",
       "name": "go-libp2p-interface-pnet",
-      "version": "1.0.1"
+      "version": "2.0.0"
     },
     {
       "author": "whyrusleeping",
