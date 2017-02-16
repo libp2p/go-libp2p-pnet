@@ -10,9 +10,9 @@
   "gxDependencies": [
     {
       "author": "Kubuxu",
-      "hash": "QmbyJsuKfxWmcCMfHEGvqofjV8U3QP8ZQxDeAy1GmY9dW1",
+      "hash": "QmWYMSYjgJQVLmYYBGqXFMaveAN8g17VpSSXvgR6zFuvYp",
       "name": "go-libp2p-dummy-conn",
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "author": "libp2p",
@@ -43,6 +43,6 @@
   "language": "go",
   "license": "MIT",
   "name": "go-libp2p-pnet",
-  "version": "2.2.0"
+  "version": "2.2.1"
 }
 
