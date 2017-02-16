@@ -9,6 +9,8 @@ import (
 
 var _ ipnet.Protector = (*protector)(nil)
 
+// NewProtector creates ipnet.Protector instance from a io.Reader stream
+// that should include Multicodec encoded V1 PSK.
 func NewProtector(input io.Reader) (ipnet.Protector, error) {
 	psk, err := decodeV1PSKKey(input)
 	if err != nil {
