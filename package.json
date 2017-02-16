@@ -34,9 +34,9 @@
     },
     {
       "author": "davidlazar",
-      "hash": "QmeF4Vdeq6guyCkqCWgGBq3tsYNjc6wLK5pP9nTYFULF61",
-      "name": "go-crypto",
-      "version": "0.1.0"
+      "hash": "QmUo6psR2yoA93hA2XEdpqGoCBN4n8AyvWVoYkAvCL6GJK",
+      "name": "go-crypto-dav",
+      "version": "0.2.0"
     }
   ],
   "gxVersion": "0.9.1",
