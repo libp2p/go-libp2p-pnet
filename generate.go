@@ -11,6 +11,7 @@ func newLine() io.Reader {
 	return bytes.NewReader([]byte("\n"))
 }
 
+// GenerateV1PSK generates new PSK key that can be used with NewProtector
 func GenerateV1PSK() io.Reader {
 	psk := make([]byte, 32)
 	rand.Read(psk)
