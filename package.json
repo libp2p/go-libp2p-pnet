@@ -10,15 +10,15 @@
   "gxDependencies": [
     {
       "author": "Kubuxu",
-      "hash": "QmbyJsuKfxWmcCMfHEGvqofjV8U3QP8ZQxDeAy1GmY9dW1",
+      "hash": "QmWYMSYjgJQVLmYYBGqXFMaveAN8g17VpSSXvgR6zFuvYp",
       "name": "go-libp2p-dummy-conn",
-      "version": "0.2.0"
+      "version": "0.2.1"
     },
     {
       "author": "libp2p",
-      "hash": "QmPz66HHE2cG3KERnAPp8gVSyAPt2N1H9mLiq9nvxh5Xmb",
+      "hash": "QmcT6bMjz32yoMdyvZsMvqFnbbsDxhTYw6FG1yMqKV8Rbh",
       "name": "go-libp2p-interface-pnet",
-      "version": "1.0.1"
+      "version": "2.0.0"
     },
     {
       "author": "whyrusleeping",
@@ -34,15 +34,15 @@
     },
     {
       "author": "davidlazar",
-      "hash": "QmeF4Vdeq6guyCkqCWgGBq3tsYNjc6wLK5pP9nTYFULF61",
-      "name": "go-crypto",
-      "version": "0.1.0"
+      "hash": "QmUo6psR2yoA93hA2XEdpqGoCBN4n8AyvWVoYkAvCL6GJK",
+      "name": "go-crypto-dav",
+      "version": "0.2.0"
     }
   ],
   "gxVersion": "0.9.1",
   "language": "go",
   "license": "MIT",
   "name": "go-libp2p-pnet",
-  "version": "1.0.2"
+  "version": "2.2.1"
 }
 
