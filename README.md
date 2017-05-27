@@ -5,7 +5,7 @@ go-libp2p-pnet
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](http://libp2p.io/)
 [![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
 
-> An implementation of o-libp2p-interface-pnet
+> An implementation of go-libp2p-interface-pnet
 
 
 ## Table of Contents
