@@ -3,6 +3,7 @@ package pnet
 import (
 	"crypto/cipher"
 	"crypto/rand"
+	"io"
 
 	salsa20 "github.com/davidlazar/go-crypto/salsa20"
 	mpool "github.com/jbenet/go-msgio/mpool"
@@ -31,11 +32,8 @@ type pskConn struct {
 func (c *pskConn) Read(out []byte) (int, error) {
 	if c.readS20 == nil {
 		nonce := make([]byte, 24)
-		n, err := c.Conn.Read(nonce)
+		_, err := io.ReadFull(c.Conn, nonce)
 		if err != nil {
-			return 0, err
-		}
-		if n != 24 {
 			return 0, errShortNonce
 		}
 		c.readS20 = salsa20.New(c.psk, nonce)
