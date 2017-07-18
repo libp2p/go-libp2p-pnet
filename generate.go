@@ -15,9 +15,13 @@ func newLine() io.Reader {
 func GenerateV1PSK() io.Reader {
 	psk := make([]byte, 32)
 	rand.Read(psk)
+
+	return bytesToV1Psk(psk)
+}
+
+func bytesToV1Psk(psk []byte) io.Reader {
 	hexPsk := make([]byte, len(psk)*2)
 	hex.Encode(hexPsk, psk)
-
 	// just a shortcut to NewReader
 	nr := func(b []byte) io.Reader {
 		return bytes.NewReader(b)
