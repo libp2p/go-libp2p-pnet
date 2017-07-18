@@ -24,6 +24,10 @@ func NewProtector(input io.Reader) (ipnet.Protector, error) {
 	}, nil
 }
 
+func NewProtectorFromBytes(input []byte) (ipnet.Protector, error) {
+    return NewProtector(bytesToV1Psk(input))
+}
+
 type protector struct {
 	psk         *[32]byte
 	fingerprint []byte
