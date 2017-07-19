@@ -12,15 +12,18 @@ var _ ipnet.Protector = (*protector)(nil)
 // NewProtector creates ipnet.Protector instance from a io.Reader stream
 // that should include Multicodec encoded V1 PSK.
 func NewProtector(input io.Reader) (ipnet.Protector, error) {
-	psk, err := decodeV1PSKKey(input)
+	psk, err := decodeV1PSK(input)
 	if err != nil {
 		return nil, err
 	}
-	f := fingerprint(psk)
+	return NewV1ProtectorFromBytes(psk)
+}
 
+// NewV1ProtectorFromBytes creates ipnet.Protector of the V1 version.
+func NewV1ProtectorFromBytes(psk *[32]byte) (ipnet.Protector, error) {
 	return &protector{
 		psk:         psk,
-		fingerprint: f,
+		fingerprint: fingerprint(psk),
 	}, nil
 }
 

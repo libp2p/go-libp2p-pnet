@@ -13,7 +13,7 @@ var (
 	headerPSKv1 = mc.Header(pathPSKv1)
 )
 
-func decodeV1PSKKey(in io.Reader) (*[32]byte, error) {
+func decodeV1PSK(in io.Reader) (*[32]byte, error) {
 	var err error
 	in, err = mc.WrapTransformPathToHeader(in)
 	if err != nil {
