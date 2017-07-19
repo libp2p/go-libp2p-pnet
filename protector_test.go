@@ -6,8 +6,8 @@ import (
 	"net"
 	"time"
 
-	smux "github.com/jbenet/go-stream-muxer"
 	tpt "github.com/libp2p/go-libp2p-transport"
+	smux "github.com/libp2p/go-stream-muxer"
 	ma "github.com/multiformats/go-multiaddr"
 
 	. "github.com/onsi/ginkgo"
