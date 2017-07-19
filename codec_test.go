@@ -22,7 +22,7 @@ func TestDecodeHex(t *testing.T) {
 		b.WriteString("FF")
 	}
 
-	psk, err := decodeV1PSKKey(b)
+	psk, err := decodeV1PSK(b)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,7 +47,7 @@ func TestDecodeB64(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	psk, err := decodeV1PSKKey(b)
+	psk, err := decodeV1PSK(b)
 	if err != nil {
 		t.Fatal(err)
 	}
