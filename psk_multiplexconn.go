@@ -5,30 +5,30 @@ import (
 	smux "github.com/libp2p/go-stream-muxer"
 )
 
-type pskMultiStreamConn struct {
-	tpt.MultiStreamConn
+type pskMultiplexConn struct {
+	tpt.MultiplexConn
 	psk *[32]byte
 }
 
-var _ tpt.MultiStreamConn = &pskMultiStreamConn{}
+var _ tpt.MultiplexConn = &pskMultiplexConn{}
 
-func newPSKMultiStreamConn(psk *[32]byte, in tpt.MultiStreamConn) (*pskMultiStreamConn, error) {
-	return &pskMultiStreamConn{
-		MultiStreamConn: in,
-		psk:             psk,
+func newPSKMultiplexConn(psk *[32]byte, in tpt.MultiplexConn) (*pskMultiplexConn, error) {
+	return &pskMultiplexConn{
+		MultiplexConn: in,
+		psk:           psk,
 	}, nil
 }
 
-func (c *pskMultiStreamConn) AcceptStream() (smux.Stream, error) {
-	stream, err := c.MultiStreamConn.AcceptStream()
+func (c *pskMultiplexConn) AcceptStream() (smux.Stream, error) {
+	stream, err := c.MultiplexConn.AcceptStream()
 	if err != nil {
 		return nil, err
 	}
 	return newPSKStream(c.psk, stream)
 }
 
-func (c *pskMultiStreamConn) OpenStream() (smux.Stream, error) {
-	stream, err := c.MultiStreamConn.OpenStream()
+func (c *pskMultiplexConn) OpenStream() (smux.Stream, error) {
+	stream, err := c.MultiplexConn.OpenStream()
 	if err != nil {
 		return nil, err
 	}

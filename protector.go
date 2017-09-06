@@ -35,12 +35,12 @@ func NewV1ProtectorFromBytes(psk *[32]byte) (ipnet.Protector, error) {
 
 func (p protector) Protect(in tpt.Conn) (tpt.Conn, error) {
 	switch c := in.(type) {
-	case tpt.SingleStreamConn:
-		return newPSKSingleStreamConn(p.psk, c)
-	case tpt.MultiStreamConn:
-		return newPSKMultiStreamConn(p.psk, c)
+	case tpt.DuplexConn:
+		return newPSKDuplexConn(p.psk, c)
+	case tpt.MultiplexConn:
+		return newPSKMultiplexConn(p.psk, c)
 	default:
-		return nil, errors.New("connection is neither SingleStreamConn nor MultiStreamConn")
+		return nil, errors.New("connection is neither DuplexConn nor MultiplexConn")
 	}
 }
 

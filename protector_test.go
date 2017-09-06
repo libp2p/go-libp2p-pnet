@@ -25,41 +25,40 @@ func newDuplexStream() (io.ReadWriter, io.ReadWriter) {
 	return rw{r1, w2}, rw{r2, w1}
 }
 
-type mockSingleStreamConn struct {
+type mockDuplexConn struct {
 	conn io.ReadWriter
 }
 
-var _ tpt.SingleStreamConn = &mockSingleStreamConn{}
+var _ tpt.DuplexConn = &mockDuplexConn{}
 
-func (c *mockSingleStreamConn) Read(b []byte) (int, error)       { return c.conn.Read(b) }
-func (c *mockSingleStreamConn) Write(p []byte) (int, error)      { return c.conn.Write(p) }
-func (c *mockSingleStreamConn) Close() error                     { panic("not implemented") }
-func (c *mockSingleStreamConn) LocalAddr() net.Addr              { panic("not implemented") }
-func (c *mockSingleStreamConn) LocalMultiaddr() ma.Multiaddr     { panic("not implemented") }
-func (c *mockSingleStreamConn) RemoteAddr() net.Addr             { panic("not implemented") }
-func (c *mockSingleStreamConn) RemoteMultiaddr() ma.Multiaddr    { panic("not implemented") }
-func (c *mockSingleStreamConn) SetDeadline(time.Time) error      { panic("not implemented") }
-func (c *mockSingleStreamConn) SetReadDeadline(time.Time) error  { panic("not implemented") }
-func (c *mockSingleStreamConn) SetWriteDeadline(time.Time) error { panic("not implemented") }
-func (c *mockSingleStreamConn) Transport() tpt.Transport         { panic("not implemented") }
+func (c *mockDuplexConn) Read(b []byte) (int, error)       { return c.conn.Read(b) }
+func (c *mockDuplexConn) Write(p []byte) (int, error)      { return c.conn.Write(p) }
+func (c *mockDuplexConn) Close() error                     { panic("not implemented") }
+func (c *mockDuplexConn) LocalAddr() net.Addr              { panic("not implemented") }
+func (c *mockDuplexConn) LocalMultiaddr() ma.Multiaddr     { panic("not implemented") }
+func (c *mockDuplexConn) RemoteAddr() net.Addr             { panic("not implemented") }
+func (c *mockDuplexConn) RemoteMultiaddr() ma.Multiaddr    { panic("not implemented") }
+func (c *mockDuplexConn) SetDeadline(time.Time) error      { panic("not implemented") }
+func (c *mockDuplexConn) SetReadDeadline(time.Time) error  { panic("not implemented") }
+func (c *mockDuplexConn) SetWriteDeadline(time.Time) error { panic("not implemented") }
+func (c *mockDuplexConn) Transport() tpt.Transport         { panic("not implemented") }
 
-type mockMultiStreamConn struct {
+type mockMultiplexConn struct {
 	streamToAccept *mockStream
 	streamToOpen   *mockStream
 }
 
-var _ tpt.MultiStreamConn = &mockMultiStreamConn{}
+var _ tpt.MultiplexConn = &mockMultiplexConn{}
 
-func (c *mockMultiStreamConn) AcceptStream() (smux.Stream, error) { return c.streamToAccept, nil }
-func (c *mockMultiStreamConn) OpenStream() (smux.Stream, error)   { return c.streamToOpen, nil }
-func (c *mockMultiStreamConn) Close() error                       { panic("not implemented") }
-func (c *mockMultiStreamConn) IsClosed() bool                     { panic("not implemented") }
-func (c *mockMultiStreamConn) LocalAddr() net.Addr                { panic("not implemented") }
-func (c *mockMultiStreamConn) LocalMultiaddr() ma.Multiaddr       { panic("not implemented") }
-func (c *mockMultiStreamConn) RemoteAddr() net.Addr               { panic("not implemented") }
-func (c *mockMultiStreamConn) RemoteMultiaddr() ma.Multiaddr      { panic("not implemented") }
-func (c *mockMultiStreamConn) Serve(smux.StreamHandler)           { panic("not implemented") }
-func (c *mockMultiStreamConn) Transport() tpt.Transport           { panic("not implemented") }
+func (c *mockMultiplexConn) AcceptStream() (smux.Stream, error) { return c.streamToAccept, nil }
+func (c *mockMultiplexConn) OpenStream() (smux.Stream, error)   { return c.streamToOpen, nil }
+func (c *mockMultiplexConn) Close() error                       { panic("not implemented") }
+func (c *mockMultiplexConn) IsClosed() bool                     { panic("not implemented") }
+func (c *mockMultiplexConn) LocalAddr() net.Addr                { panic("not implemented") }
+func (c *mockMultiplexConn) LocalMultiaddr() ma.Multiaddr       { panic("not implemented") }
+func (c *mockMultiplexConn) RemoteAddr() net.Addr               { panic("not implemented") }
+func (c *mockMultiplexConn) RemoteMultiaddr() ma.Multiaddr      { panic("not implemented") }
+func (c *mockMultiplexConn) Transport() tpt.Transport           { panic("not implemented") }
 
 type mockStream struct {
 	io.ReadWriter
@@ -70,6 +69,7 @@ var _ smux.Stream = &mockStream{}
 // func (s *mockStream) Read(b []byte) (int, error)       { return s.dataToRead.Read(b) }
 // func (s *mockStream) Write(b []byte) (int, error)      { return s.dataToWrite.Write(b) }
 func (s *mockStream) Close() error                     { panic("not implemented") }
+func (s *mockStream) Reset() error                     { panic("not implemented") }
 func (s *mockStream) SetDeadline(time.Time) error      { panic("not implemented") }
 func (s *mockStream) SetReadDeadline(time.Time) error  { panic("not implemented") }
 func (s *mockStream) SetWriteDeadline(time.Time) error { panic("not implemented") }
@@ -87,20 +87,20 @@ var _ = Describe("PSK protected SingleConn", func() {
 		prot = p.(*protector)
 	})
 
-	Context("SingleStreamConns", func() {
-		var conn1, conn2 *pskSingleStreamConn
+	Context("DuplexConns", func() {
+		var conn1, conn2 *pskDuplexConn
 
 		BeforeEach(func() {
 			rw1, rw2 := newDuplexStream()
-			c1, err := prot.Protect(&mockSingleStreamConn{rw1})
+			c1, err := prot.Protect(&mockDuplexConn{rw1})
 			Expect(err).ToNot(HaveOccurred())
-			conn1 = c1.(*pskSingleStreamConn)
-			c2, err := prot.Protect(&mockSingleStreamConn{rw2})
+			conn1 = c1.(*pskDuplexConn)
+			c2, err := prot.Protect(&mockDuplexConn{rw2})
 			Expect(err).ToNot(HaveOccurred())
-			conn2 = c2.(*pskSingleStreamConn)
+			conn2 = c2.(*pskDuplexConn)
 		})
 
-		It("reads and writes on a SingleStreamConn", func(done Done) {
+		It("reads and writes on a DuplexConn", func(done Done) {
 			testDone := make(chan struct{})
 			// the connection is not buffered, so run it in a separate go-routine
 			go func() {
@@ -148,14 +148,14 @@ var _ = Describe("PSK protected SingleConn", func() {
 		})
 	})
 
-	It("reads and writes on a MultiStreamConn", func(done Done) {
+	It("reads and writes on a MultiplexConn", func(done Done) {
 		rw1, rw2 := newDuplexStream()
-		c1, err := prot.Protect(&mockMultiStreamConn{streamToOpen: &mockStream{rw1}})
+		c1, err := prot.Protect(&mockMultiplexConn{streamToOpen: &mockStream{rw1}})
 		Expect(err).ToNot(HaveOccurred())
-		conn1 := c1.(*pskMultiStreamConn)
-		c2, err := prot.Protect(&mockMultiStreamConn{streamToAccept: &mockStream{rw2}})
+		conn1 := c1.(*pskMultiplexConn)
+		c2, err := prot.Protect(&mockMultiplexConn{streamToAccept: &mockStream{rw2}})
 		Expect(err).ToNot(HaveOccurred())
-		conn2 := c2.(*pskMultiStreamConn)
+		conn2 := c2.(*pskMultiplexConn)
 
 		str1, err := conn1.OpenStream()
 		Expect(err).ToNot(HaveOccurred())
