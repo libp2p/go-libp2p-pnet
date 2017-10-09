@@ -1,11 +1,17 @@
 package pnet
 
 import (
+	"errors"
 	"io"
 
 	ipnet "github.com/libp2p/go-libp2p-interface-pnet"
-	tconn "github.com/libp2p/go-libp2p-transport"
+	tpt "github.com/libp2p/go-libp2p-transport"
 )
+
+type protector struct {
+	psk         *[32]byte
+	fingerprint []byte
+}
 
 var _ ipnet.Protector = (*protector)(nil)
 
@@ -27,14 +33,17 @@ func NewV1ProtectorFromBytes(psk *[32]byte) (ipnet.Protector, error) {
 	}, nil
 }
 
-type protector struct {
-	psk         *[32]byte
-	fingerprint []byte
+func (p protector) Protect(in tpt.Conn) (tpt.Conn, error) {
+	switch c := in.(type) {
+	case tpt.DuplexConn:
+		return newPSKDuplexConn(p.psk, c)
+	case tpt.MultiplexConn:
+		return newPSKMultiplexConn(p.psk, c)
+	default:
+		return nil, errors.New("connection is neither DuplexConn nor MultiplexConn")
+	}
 }
 
-func (p protector) Protect(in tconn.Conn) (tconn.Conn, error) {
-	return newPSKConn(p.psk, in)
-}
 func (p protector) Fingerprint() []byte {
 	return p.fingerprint
 }
