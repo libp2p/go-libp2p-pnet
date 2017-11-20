@@ -14,8 +14,6 @@ import (
 // we are using buffer pool as user needs their slice back
 // so we can't do XOR cripter in place
 var (
-	bufPool = mpool.ByteSlicePool
-
 	errShortNonce  = ipnet.NewError("could not read full nonce")
 	errInsecureNil = ipnet.NewError("insecure is nil")
 	errPSKNil      = ipnet.NewError("pre-shread key is nil")
@@ -40,8 +38,8 @@ func (c *pskConn) Read(out []byte) (int, error) {
 	}
 
 	maxn := uint32(len(out))
-	in := bufPool.Get(maxn).([]byte) // get buffer
-	defer bufPool.Put(maxn, in)      // put the buffer back
+	in := mpool.ByteSlicePool.Get(maxn).([]byte) // get buffer
+	defer mpool.ByteSlicePool.Put(maxn, in)      // put the buffer back
 
 	in = in[:maxn]            // truncate to required length
 	n, err := c.Conn.Read(in) // read to in
@@ -69,8 +67,8 @@ func (c *pskConn) Write(in []byte) (int, error) {
 		c.writeS20 = salsa20.New(c.psk, nonce)
 	}
 	n := uint32(len(in))
-	out := bufPool.Get(n).([]byte) // get buffer
-	defer bufPool.Put(n, out)      // put the buffer back
+	out := mpool.ByteSlicePool.Get(n).([]byte) // get buffer
+	defer mpool.ByteSlicePool.Put(n, out)      // put the buffer back
 
 	out = out[:n]                    // truncate to required length
 	c.writeS20.XORKeyStream(out, in) // encrypt
