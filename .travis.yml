@@ -20,3 +20,5 @@ cache:
 
 notifications:
   email: false
+
+env: GOTFLAGS="-race"
