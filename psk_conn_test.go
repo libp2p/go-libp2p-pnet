@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"testing"
 
-	dconn "github.com/Kubuxu/go-libp2p-dummy-conn"
+	dconn "github.com/libp2p/go-libp2p-dummy-conn"
 	tconn "github.com/libp2p/go-libp2p-transport"
 )
 
