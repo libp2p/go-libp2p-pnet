@@ -10,15 +10,15 @@
   "gxDependencies": [
     {
       "author": "Kubuxu",
-      "hash": "QmSkKiWJQjqX29CpxehzhqoevMzkSZ3ykvy6sdrfYfZsub",
+      "hash": "QmWYC2kQRNrdHYzjVSTUAvtxehK5i7NBE5q11FbFp5izwB",
       "name": "go-libp2p-dummy-conn",
-      "version": "0.2.8"
+      "version": "0.2.9"
     },
     {
       "author": "libp2p",
-      "hash": "QmRFDGFgeKQjEjZdVcDUBiGYLkRDHbH151dLwa5K7dgGZy",
+      "hash": "QmZPrWxuM8GHr4cGKbyF5CCT11sFUP9hgqpeUHALvx2nUr",
       "name": "go-libp2p-interface-pnet",
-      "version": "2.1.5"
+      "version": "2.1.6"
     },
     {
       "author": "whyrusleeping",
@@ -44,6 +44,6 @@
   "license": "MIT",
   "name": "go-libp2p-pnet",
   "releaseCmd": "git commit -a -m \"gx release $VERSION\"",
-  "version": "2.3.5"
+  "version": "2.3.6"
 }
 
