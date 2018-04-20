@@ -1,6 +1,7 @@
 package pnet
 
 import (
+	"fmt"
 	"io"
 
 	ipnet "github.com/libp2p/go-libp2p-interface-pnet"
@@ -14,7 +15,7 @@ var _ ipnet.Protector = (*protector)(nil)
 func NewProtector(input io.Reader) (ipnet.Protector, error) {
 	psk, err := decodeV1PSK(input)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("malformed private network key: %s", err)
 	}
 	return NewV1ProtectorFromBytes(psk)
 }
