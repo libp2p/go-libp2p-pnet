@@ -37,14 +37,9 @@ func (c *pskConn) Read(out []byte) (int, error) {
 		c.readS20 = salsa20.New(c.psk, nonce)
 	}
 
-	maxn := uint32(len(out))
-	in := mpool.ByteSlicePool.Get(maxn).([]byte) // get buffer
-	defer mpool.ByteSlicePool.Put(maxn, in)      // put the buffer back
-
-	in = in[:maxn]            // truncate to required length
-	n, err := c.Conn.Read(in) // read to in
+	n, err := c.Conn.Read(out) // read to in
 	if n > 0 {
-		c.readS20.XORKeyStream(out[:n], in[:n]) // decrypt to out buffer
+		c.readS20.XORKeyStream(out[:n], out[:n]) // decrypt to out buffer
 	}
 	return n, err
 }
