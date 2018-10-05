@@ -16,9 +16,9 @@
     },
     {
       "author": "multiformats",
-      "hash": "QmewJ1Zp9Hwz5HcMd7JYjhLXwvEHTL2UBCCz3oLt1E2N5z",
+      "hash": "QmSd767zQyAw7Qw6nHUELpZccAoPcd521YFP2GUZ4PiRqR",
       "name": "go-multicodec",
-      "version": "0.1.6"
+      "version": "0.1.7"
     },
     {
       "author": "davidlazar",
@@ -28,9 +28,9 @@
     },
     {
       "author": "Stebalien",
-      "hash": "QmUQy76yspPa3fRyY3GzXFTg9n8JVwFru6ue3KFRt4MeTw",
+      "hash": "QmZRt3dzgDWkjssrmNvBKVNJpLBMafJi5AKpdfMkbfWRu5",
       "name": "go-buffer-pool",
-      "version": "0.1.1"
+      "version": "0.1.2"
     }
   ],
   "gxVersion": "0.9.1",
@@ -38,6 +38,6 @@
   "license": "MIT",
   "name": "go-libp2p-pnet",
   "releaseCmd": "git commit -a -m \"gx release $VERSION\"",
-  "version": "3.0.2"
+  "version": "3.0.3"
 }
 
