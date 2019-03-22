@@ -6,18 +6,44 @@ import (
 	"testing"
 )
 
-func bufWithBase(base string) *bytes.Buffer {
+func bufWithBase(base string, windows bool) *bytes.Buffer {
 
 	b := &bytes.Buffer{}
 	b.Write(pathPSKv1)
+	if windows {
+		b.WriteString("\r")
+	}
 	b.WriteString("\n")
 	b.WriteString(base)
+	if windows {
+		b.WriteString("\r")
+	}
 	b.WriteString("\n")
 	return b
 }
 
 func TestDecodeHex(t *testing.T) {
-	b := bufWithBase("/base16/")
+	testDecodeHex(t, true)
+	testDecodeHex(t, false)
+}
+
+func TestDecodeBad(t *testing.T) {
+	testDecodeBad(t, true)
+	testDecodeBad(t, false)
+}
+
+func testDecodeBad(t *testing.T, windows bool) {
+	b := bufWithBase("/verybadbase/", windows)
+	b.WriteString("Have fun decoding that key")
+
+	_, err := decodeV1PSK(b)
+	if err == nil {
+		t.Fatal("expected 'unknown encoding' got nil")
+	}
+}
+
+func testDecodeHex(t *testing.T, windows bool) {
+	b := bufWithBase("/base16/", windows)
 	for i := 0; i < 32; i++ {
 		b.WriteString("FF")
 	}
@@ -35,7 +61,12 @@ func TestDecodeHex(t *testing.T) {
 }
 
 func TestDecodeB64(t *testing.T) {
-	b := bufWithBase("/base64/")
+	testDecodeB64(t, true)
+	testDecodeB64(t, false)
+}
+
+func testDecodeB64(t *testing.T, windows bool) {
+	b := bufWithBase("/base64/", windows)
 	key := make([]byte, 32)
 	for i := 0; i < 32; i++ {
 		key[i] = byte(i)
@@ -46,6 +77,37 @@ func TestDecodeB64(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	err = e.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	psk, err := decodeV1PSK(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for i, b := range psk {
+		if b != psk[i] {
+			t.Fatal("byte was wrong")
+		}
+	}
+
+}
+
+func TestDecodeBin(t *testing.T) {
+	testDecodeBin(t, true)
+	testDecodeBin(t, false)
+}
+
+func testDecodeBin(t *testing.T, windows bool) {
+	b := bufWithBase("/bin/", windows)
+	key := make([]byte, 32)
+	for i := 0; i < 32; i++ {
+		key[i] = byte(i)
+	}
+
+	b.Write(key)
 
 	psk, err := decodeV1PSK(b)
 	if err != nil {
