@@ -27,6 +27,20 @@ func TestDecodeHex(t *testing.T) {
 	testDecodeHex(t, false)
 }
 
+func TestDecodeBad(t *testing.T) {
+	testDecodeBad(t, true)
+	testDecodeBad(t, false)
+}
+func testDecodeBad(t *testing.T, windows bool) {
+	b := bufWithBase("/verybadbase/", windows)
+	b.WriteString("Have fun decoding that key")
+
+	_, err := decodeV1PSK(b)
+	if err == nil {
+		t.Fatal("expected 'unknown encoding' got nil")
+	}
+}
+
 func testDecodeHex(t *testing.T, windows bool) {
 	b := bufWithBase("/base16/", windows)
 	for i := 0; i < 32; i++ {
