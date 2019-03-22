@@ -31,6 +31,7 @@ func TestDecodeBad(t *testing.T) {
 	testDecodeBad(t, true)
 	testDecodeBad(t, false)
 }
+
 func testDecodeBad(t *testing.T, windows bool) {
 	b := bufWithBase("/verybadbase/", windows)
 	b.WriteString("Have fun decoding that key")
@@ -80,6 +81,33 @@ func testDecodeB64(t *testing.T, windows bool) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	psk, err := decodeV1PSK(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for i, b := range psk {
+		if b != psk[i] {
+			t.Fatal("byte was wrong")
+		}
+	}
+
+}
+
+func TestDecodeBin(t *testing.T) {
+	testDecodeBin(t, true)
+	testDecodeBin(t, false)
+}
+
+func testDecodeBin(t *testing.T, windows bool) {
+	b := bufWithBase("/bin/", windows)
+	key := make([]byte, 32)
+	for i := 0; i < 32; i++ {
+		key[i] = byte(i)
+	}
+
+	b.Write(key)
 
 	psk, err := decodeV1PSK(b)
 	if err != nil {

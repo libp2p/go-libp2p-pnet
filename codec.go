@@ -11,6 +11,7 @@ import (
 
 var (
 	pathPSKv1  = []byte("/key/swarm/psk/1.0.0/")
+	pathBin    = "/bin/"
 	pathBase16 = "/base16/"
 	pathBase64 = "/base64/"
 )
@@ -51,6 +52,8 @@ func decodeV1PSK(in io.Reader) (*[32]byte, error) {
 		decoder = hex.NewDecoder(reader)
 	case pathBase64:
 		decoder = base64.NewDecoder(base64.StdEncoding, reader)
+	case pathBin:
+		decoder = reader
 	default:
 		return nil, fmt.Errorf("unknown encoding: %s", header)
 	}
