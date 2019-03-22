@@ -46,6 +46,10 @@ func TestDecodeB64(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	err = e.Close()
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	psk, err := decodeV1PSK(b)
 	if err != nil {
