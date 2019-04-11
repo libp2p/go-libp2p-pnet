@@ -30,3 +30,7 @@ Small note: If editing the Readme, please conform to the [standard-readme](https
 ## License
 
 MIT © Jakub Sztandera
+
+---
+
+The last gx published version of this module was: 3.0.5: QmTwDsJUPioMKoiuXkAmiPxL1i4tjuG5vkxJgNpiHpXb3Y
