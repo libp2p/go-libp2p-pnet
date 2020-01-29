@@ -3,8 +3,10 @@ package pnet
 import (
 	"crypto/cipher"
 	"crypto/rand"
+	"fmt"
 	"io"
 	"net"
+	"runtime/debug"
 
 	"github.com/libp2p/go-libp2p-core/pnet"
 
@@ -39,6 +41,14 @@ func (c *pskConn) Read(out []byte) (int, error) {
 	}
 
 	n, err := c.Conn.Read(out) // read to in
+	if n > len(out) {
+		// Something went terribly wrong. Close the connection, print a warning, and abort
+		err := fmt.Errorf("expected to read <= %d in private network adapter, read %d: %T", len(out), n, c.Conn)
+		fmt.Println("ERROR ", err)
+		debug.PrintStack()
+		c.Close()
+		return 0, err
+	}
 	if n > 0 {
 		c.readS20.XORKeyStream(out[:n], out[:n]) // decrypt to out buffer
 	}
