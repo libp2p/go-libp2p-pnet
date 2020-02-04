@@ -43,10 +43,10 @@ func (c *pskConn) Read(out []byte) (int, error) {
 	n, err := c.Conn.Read(out) // read to in
 	if n > len(out) {
 		// Something went terribly wrong. Close the connection, print a warning, and abort
-		err := fmt.Errorf("expected to read <= %d in private network adapter, read %d: %T", len(out), n, c.Conn)
-		fmt.Println("ERROR ", err)
+		// Could be related to https://github.com/golang/go/issues/24727???
+		newErr := fmt.Errorf("expected to read <= %d in private network adapter, read: %d, type: %T, err: %s", len(out), n, c.Conn, err)
+		fmt.Println("ERROR ", newErr)
 		debug.PrintStack()
-		c.Close()
 		return 0, err
 	}
 	if n > 0 {
