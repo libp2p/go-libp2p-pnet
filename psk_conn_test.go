@@ -8,16 +8,15 @@ import (
 	"testing"
 )
 
-var testPSK = [32]byte{} // null bytes are as good test key as any other key
-
 func setupPSKConns(ctx context.Context, t *testing.T) (net.Conn, net.Conn) {
+	testPSK := make([]byte, 32) // null bytes are as good test key as any other key
 	conn1, conn2 := net.Pipe()
 
-	psk1, err := newPSKConn(&testPSK, conn1)
+	psk1, err := NewProtectedConn(testPSK, conn1)
 	if err != nil {
 		t.Fatal(err)
 	}
-	psk2, err := newPSKConn(&testPSK, conn2)
+	psk2, err := NewProtectedConn(testPSK, conn2)
 	if err != nil {
 		t.Fatal(err)
 	}

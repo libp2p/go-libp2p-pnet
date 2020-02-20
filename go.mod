@@ -1,8 +1,9 @@
 module github.com/libp2p/go-libp2p-pnet
 
+go 1.13
+
 require (
 	github.com/davidlazar/go-crypto v0.0.0-20170701192655-dcfb0a7ac018
 	github.com/libp2p/go-buffer-pool v0.0.2
-	github.com/libp2p/go-libp2p-core v0.3.0
-	golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f
+	github.com/libp2p/go-libp2p-core v0.5.0
 )
