@@ -76,7 +76,9 @@ func TestPSKFragmentation(t *testing.T) {
 	}()
 
 	for i := 0; i < 10; i++ {
-		_, err = psk2.Read(out)
+		if _, err := psk2.Read(out); err != nil {
+			t.Fatal(err)
+		}
 		if !bytes.Equal(in[:100], out) {
 			t.Fatalf("input and output are not the same")
 		}
