@@ -1,3 +1,7 @@
+# DEPRECATION NOTICE
+
+This package has moved into go-libp2p as a sub-package, github.com/libp2p/go-libp2p/p2p/net/pnet.
+
 go-libp2p-pnet
 ==================
 
